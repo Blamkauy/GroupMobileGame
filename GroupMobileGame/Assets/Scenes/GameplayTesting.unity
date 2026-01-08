@@ -368,11 +368,7 @@ PrefabInstance:
     - target: {fileID: 7614975473455826780, guid: a219ffbf3f2f44446bb4d4ad972ef7d9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1322477952313240165, guid: 15f8e3f04b2080048bdafa8aae02e7b1, type: 3}
-    - target: {fileID: 9058156896189935659, guid: a219ffbf3f2f44446bb4d4ad972ef7d9, type: 3}
-      propertyPath: angle
-      value: 155.3
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2113127250293551633, guid: 15f8e3f04b2080048bdafa8aae02e7b1, type: 3}
     - target: {fileID: 9058156896189935659, guid: a219ffbf3f2f44446bb4d4ad972ef7d9, type: 3}
       propertyPath: position.x
       value: -1.96

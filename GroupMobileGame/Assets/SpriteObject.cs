@@ -38,7 +38,7 @@ public class SpriteObject : MonoBehaviour
             if (sprites == null || sprites.Length <= 0) return;
             float truncatedAngle = angle / 360f % 1;
             while (truncatedAngle < 0) truncatedAngle++;
-            sr.sprite = rotationCount == 0||sprites.Length<rotationCount ? sprites[currentFrame] : sprites[(Mathf.RoundToInt(truncatedAngle * (rotationCount-1)) * sprites.Length / (rotationCount-1) + currentFrame)%sprites.Length];
+            sr.sprite = rotationCount <=1||sprites.Length<rotationCount ? sprites[currentFrame] : sprites[(Mathf.RoundToInt(truncatedAngle * (rotationCount-1)) * sprites.Length / (rotationCount-1) + currentFrame)%sprites.Length];
         }
     }
     void Update()
