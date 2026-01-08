@@ -8,20 +8,24 @@ public class SpriteObject : MonoBehaviour
     public bool setSpriteDepth = true;
 
     public Sprite[] sprites;//All frames of every angle in order of Angle1Frame1, Angle1Frame2,Angle1Frame3,Angle2Frame1,Angle2Frame2... etc.
-    public int rotationCount;//How many different angles are there?
+    public int rotationCount=1;//How many different angles are there?
     public int currentFrame;//Curent animation frame
     public Sprite overrideSprite;//normall null, otherwise, will always set the spriterenderer to this sprite.
     public SpriteRenderer sr;
     public float angle;//Verticle angle.
-    private void OnDrawGizmos()
+    public virtual void OnDrawGizmos()
     {
         UpdateSprite();
     }
-    public void UpdateSprite()
+    public static Vector3 rasterize3DPosition(Vector3 position)
+    {
+        return new Vector3(position.x, position.z + position.y * 0.422f, 0);//sin 25° ~= 0.422;
+    }
+    public virtual void UpdateSprite()
     {
         if(setPosition)
         {
-            transform.position = new Vector3(position.x,position.z+position.y*0.422f, 0);//sin 25° ~= 0.422
+            transform.position = rasterize3DPosition(position);
         }
 
         if (sr == null||!setSprite) return;
@@ -41,7 +45,7 @@ public class SpriteObject : MonoBehaviour
             sr.sprite = rotationCount <=1||sprites.Length<rotationCount ? sprites[currentFrame] : sprites[(Mathf.RoundToInt(truncatedAngle * (rotationCount-1)) * sprites.Length / (rotationCount-1) + currentFrame)%sprites.Length];
         }
     }
-    void Update()
+    public virtual void Update()
     {
         UpdateSprite();
     }
