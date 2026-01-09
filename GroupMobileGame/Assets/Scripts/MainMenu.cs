@@ -16,19 +16,23 @@ public class MainMenu : MonoBehaviour
     {
         GameManager.main.controlScheme = (GameControlScheme)ID;
     }
+    public void OpenSettings()
+    {
+        GameManager.main.SetSettingsmenu(true);
+    }
     public void StartGame(int difficulty)
     {
         GameManager.main.difficulty = (GameDifficulty)difficulty;
-        Debug.Log($"Player has started the game on difficulty:{GameManager.main.difficulty.ToString()}");
+        Debug.Log($"Player has started the game on difficulty: {GameManager.main.difficulty.ToString()}");
         LoadScene(1);
     }
     public void LoadScene(int ID)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(ID);
-        Debug.Log("Player as exited game!");
+        GameManager.main.LoadScene(ID);
     }
     public void ExitGame()
     {
         Application.Quit();
+        Debug.Log("Player as exitted game!");
     }
 }
