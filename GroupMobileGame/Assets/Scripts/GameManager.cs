@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager main;
     public GameDifficulty difficulty;
+    public GameControlScheme controlScheme;
     [SerializeField] AudioClip[] allAudio;
     public Dictionary<string, AudioClip> loadedAudio;
     List<AudioSource> audioChannels;
@@ -42,3 +43,4 @@ public class GameManager : MonoBehaviour
     }
 }
 public enum GameDifficulty {Easy,Normal,Hard}
+public enum GameControlScheme {Null,Mobile,PC}

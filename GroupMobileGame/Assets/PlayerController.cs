@@ -1,13 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : Entity
 {
     public float Movespeed;
+    public InputActionReference moveAction;
+    public InputActionReference shootAction;
+    public GameObject mobileControls;
+    public override void Start()
+    {
+        base.Start();
+        mobileControls.gameObject.SetActive(GameManager.main.controlScheme==GameControlScheme.Mobile);
+    }
     public override void Die()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         Debug.Log("The player has died.");
+    }
+    public void pickupInputOverride()
+    {
+        pickUpInputThisFrame = true;
+    }
+    bool pickUpInputThisFrame = false;
+    public override void Update()
+    {
+        base.Update();
+        Vector2 move = GameManager.main.controlScheme == GameControlScheme.Mobile?moveAction.action.ReadValue<Vector2>():Vector2.ClampMagnitude(new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical")),1);
+        Vector3 cameraMousePos = Vector3.Scale(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.one - Vector3.forward);
+        bool firingInput = Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space);
+        Vector2 shoot = GameManager.main.controlScheme == GameControlScheme.Mobile?shootAction.action.ReadValue<Vector2>(): new Vector2(cameraMousePos.x-transform.position.x,cameraMousePos.y-transform.position.y).normalized*(firingInput?1:0);
+        firingInput = shoot.sqrMagnitude > 0;
+        position += new Vector3(move.x,0,move.y)*Time.deltaTime*Movespeed;
+        angle = firingInput ? Mathf.Atan2(shoot.y, shoot.x) * Mathf.Rad2Deg-90f : move.sqrMagnitude > 0f ? Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg - 90f : angle;
+        if (GameManager.main.controlScheme == GameControlScheme.PC) pickUpInputThisFrame = Input.GetKeyDown(KeyCode.E);
+
+
+        pickUpInputThisFrame = false;
     }
 }
 public class Entity : SpriteObject
