@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] UIMenus;
     public Slider volumeSlider;
     [SerializeField] DroppedItem droppedItemPrefab;
+    [SerializeField] ParticleSystem[] effectParticles;
     public WeaponEntry[] AllAvailiableWeapons;
     public static void PlayAudio(string audioName,int channel=0,float volume=1f,float pitch=1f,float panning=0f,bool ignoreListenerEffects = false)
     {
@@ -87,6 +88,10 @@ public class GameManager : MonoBehaviour
         di.Randomize(Seed); di.position = pos;
         return di;
 
+    }
+    public ParticleSystem SpawnParticles(int ID)
+    {
+        return Instantiate(effectParticles[ID]);
     }
     private void Update()
     {

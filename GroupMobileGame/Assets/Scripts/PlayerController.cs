@@ -36,6 +36,13 @@ public class PlayerController : Entity
     {
         pickUpInputThisFrame = true;
     }
+    public void DropHeldItem()
+    {
+
+        GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position);
+        Destroy(holdingWeapon.gameObject);
+        holdingWeapon = null;
+    }
     bool pickUpInputThisFrame = false;
     public override void Update()
     {

@@ -26,6 +26,8 @@ public class Entity : SpriteObject
     }
     private void OnDestroy()
     {
+        foreach (Effect ef in effects)
+            ef.Destroy();
         if (gameObject.scene.isLoaded)
             allEntities.Remove(this);
     }
@@ -38,15 +40,41 @@ public class Entity : SpriteObject
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position + new Vector3(hitbox.x, hitbox.y, 0), new Vector3(hitbox.width, hitbox.height, 1f));
     }
-    public virtual void GetHit(DamageReason source)
+    public virtual bool GetHit(DamageReason source)
     {
-        if (source.team != EntityTeam.Neutral && source.team == team) return;
+        if (source.team != EntityTeam.Neutral && source.team == team) return false;
         health -= source.Damage;
         if (health <= 0) Die();
+        return true;
     }
     public bool intersectsHitbox(HitBox form)
     {
         return HitBox.HitboxIntersect(new HitBox(position, hitbox, 1f), form);
+    }
+    public void AddEffect<T>(float duration) where T : Effect
+    {
+        foreach(Effect ef in effects)
+        {
+            if (ef.GetType() == typeof(T))
+            {
+                ef.timeDestroy = Time.time+ duration;
+                break;
+            }
+        }
+        effects.Add((Effect)System.Activator.CreateInstance(typeof(T),new object[] {duration}));
+    }
+    public void AddEffect(Effect effect)
+    {
+
+        foreach (Effect ef in effects)
+        {
+            if (ef.GetType() == effect.GetType())
+            {
+                ef.timeDestroy = effect.timeDestroy;
+                break;
+            }
+        }
+        effects.Add(effect);
     }
     public static Entity[] OverlapHitbox(HitBox form)//returns a list of entities that are intersecting the form.
     {
@@ -96,13 +124,27 @@ public struct DamageReason
 public class Effect
 {
     public float timeDestroy = 0f;
+    public ParticleSystem particles;
     public Effect(float Duration)
     {
-        timeDestroy = Time.time;
+        timeDestroy = Time.time+Duration;
+    }
+    public virtual void Destroy()
+    {
+        if (particles != null)
+            GameObject.Destroy(particles.gameObject);
+
     }
     public virtual void Affect(Entity host)
     {
+        if (particles != null)
+            particles.transform.position = host.transform.position-Vector3.forward;
+        if(Time.time>timeDestroy)
+        {
+            Destroy();
+            host.effects.Remove(this);
 
+        }
     }
 }
 public class DebugFireEffect : Effect
@@ -111,7 +153,8 @@ public class DebugFireEffect : Effect
 
     public DebugFireEffect(float Duration) : base(Duration)
     {
-        timeDestroy = Time.time;
+        timeDestroy = Time.time + Duration;
+        particles = GameManager.main.SpawnParticles(0);
     }
 
     public override void Affect(Entity host)

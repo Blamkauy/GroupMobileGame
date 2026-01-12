@@ -12,8 +12,7 @@ public class DroppedItem : SpriteObject
     {
         if(PlayerController.main.holdingWeapon!=null)
         {
-            GameManager.main.SpawnDroppedItem(PlayerController.main.holdingWeapon.SpawnID, PlayerController.main.holdingWeapon.Seed, PlayerController.main.holdingWeapon.position);
-            PlayerController.main.holdingWeapon = null;
+            PlayerController.main.DropHeldItem();
         }
         PlayerController.main.holdingWeapon = GameManager.main.SpawnWeapon(ItemID, randomSeed,PlayerController.main.position);
         Destroy(gameObject);
