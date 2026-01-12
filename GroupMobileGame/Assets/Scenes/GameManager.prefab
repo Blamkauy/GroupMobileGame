@@ -1373,6 +1373,10 @@ MonoBehaviour:
   - {fileID: 8953859072543780408}
   - {fileID: 7946620165651582942}
   volumeSlider: {fileID: 4725275308735500633}
+  droppedItemPrefab: {fileID: 5770316453698075197, guid: ac731a38326b00a46b7be40e58b9df08, type: 3}
+  AllAvailiableWeapons:
+  - prefabReference: {fileID: 98848467474816529, guid: 55902539c940ff047a2f0b89253e8275, type: 3}
+    DroppedSprite: {fileID: 21300000, guid: 9d4ded3902820f44faf3541ee6624d5f, type: 3}
 --- !u!1 &7305716458316935794
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ public class SpriteObject : MonoBehaviour
         if (sr == null||!setSprite) return;
         if(setSpriteDepth)
         {
-            sr.sortingOrder = Mathf.RoundToInt(-position.z);
+            sr.sortingOrder = Mathf.RoundToInt(-position.z*10);
         }
         if (overrideSprite != null)
         {

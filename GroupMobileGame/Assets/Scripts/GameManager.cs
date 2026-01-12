@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     List<AudioSource> audioChannels;
     public GameObject[] UIMenus;
     public Slider volumeSlider;
+    [SerializeField] DroppedItem droppedItemPrefab;
+    public WeaponEntry[] AllAvailiableWeapons;
     public static void PlayAudio(string audioName,int channel=0,float volume=1f,float pitch=1f,float panning=0f,bool ignoreListenerEffects = false)
     {
         if (channel < 0) { Debug.LogError("Channel cannot be negative."); return; }
@@ -45,6 +47,11 @@ public class GameManager : MonoBehaviour
         }
         audioChannels = new List<AudioSource>();
         volumeSlider.value = 0.5f;
+
+        for(int i = 0; i < AllAvailiableWeapons.Length; i++)
+        {
+            AllAvailiableWeapons[i].prefabReference.SpawnID = i;
+        }
     }
 
     public void SetPaused(bool value)
@@ -66,6 +73,20 @@ public class GameManager : MonoBehaviour
     {
         if(volumeSlider.value!=value) volumeSlider.value = value; else
             AudioListener.volume = value;
+    }
+    public DroppedItem SpawnDroppedItem(int ID, int Seed, Vector3 pos)
+    {
+        DroppedItem di = Instantiate(droppedItemPrefab, Vector3.zero, Quaternion.identity);
+        di.ItemID = ID; di.randomSeed = Seed; di.position = pos;
+        return di;
+
+    }
+    public Weapon SpawnWeapon(int ID, int Seed, Vector3 pos)
+    {
+        Weapon di = Instantiate(AllAvailiableWeapons[ID].prefabReference, Vector3.zero, Quaternion.identity);
+        di.Randomize(Seed); di.position = pos;
+        return di;
+
     }
     private void Update()
     {
