@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -9,6 +10,8 @@ public class Entity : SpriteObject
     public static List<Entity> allEntities;
     public EntityTeam team;
     public List<Effect> effects;
+    public Vector3 velocity;
+    public bool usePhysics = true;
     public virtual void Start()
     {
         if (allEntities == null)
@@ -22,9 +25,43 @@ public class Entity : SpriteObject
         {
             ef.Affect(this);
         }
+
+        if (usePhysics && velocity.magnitude > 0)
+        {
+            Vector2 fakeVel = new Vector2(velocity.x, velocity.z);
+            RaycastHit2D collideOnMove = Physics2D.Raycast(new Vector2(position.x,position.z), fakeVel, fakeVel.magnitude * Time.deltaTime, 1 << 7);
+            if (collideOnMove.collider != null)
+            {
+                OnCollision(velocity.normalized, collideOnMove.distance,new Vector3(collideOnMove.normal.x,0,collideOnMove.normal.y));
+            }
+            if (position.y + velocity.y * Time.deltaTime < -1f)
+            {
+
+                OnCollision(velocity.normalized, position.y + 1f,Vector3.up);
+
+
+            }
+        }
+        position += velocity* Time.deltaTime;
+
         base.Update();
+
     }
-    private void OnDestroy()
+    public virtual void OnCollision(Vector3 direction,float distance,Vector3 normal)
+    {
+        if(normal == Vector3.up)
+        {
+            velocity = new Vector3(velocity.x, 0, velocity.y);
+
+        }
+        else
+        {
+            Vector2 perp = new Vector2(-normal.z, normal.x);
+            perp = Vector2.Dot(perp, new Vector2(velocity.x,velocity.z)) * perp;
+            velocity = new Vector3(perp.x, velocity.y, perp.y);
+        }
+    }
+    public virtual void OnDestroy()
     {
         foreach (Effect ef in effects)
             ef.Destroy();

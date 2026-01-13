@@ -61,7 +61,7 @@ public class PlayerController : Entity
         bool firingInput = Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space);
         Vector2 shoot = GameManager.main.controlScheme == GameControlScheme.Mobile?shootAction.action.ReadValue<Vector2>(): new Vector2(cameraMousePos.x-transform.position.x,cameraMousePos.y-transform.position.y).normalized*(firingInput?1:0);
         firingInput = shoot.sqrMagnitude > 0;
-        position += new Vector3(move.x,0,move.y)*Time.deltaTime*Movespeed;
+        velocity = new Vector3(move.x, 0, move.y) * Movespeed;
         angle = Mathf.MoveTowardsAngle(angle, firingInput ? Mathf.Atan2(shoot.y, shoot.x) * Mathf.Rad2Deg-90f : move.sqrMagnitude > 0f ? Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg - 90f : angle,Time.deltaTime*720);
 
 
