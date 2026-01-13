@@ -29,7 +29,7 @@ public class Entity : SpriteObject
         if (usePhysics && velocity.magnitude > 0)
         {
             Vector2 fakeVel = new Vector2(velocity.x, velocity.z);
-            RaycastHit2D collideOnMove = Physics2D.Raycast(new Vector2(position.x,position.z), fakeVel, fakeVel.magnitude * Time.deltaTime, 1 << 7);
+            RaycastHit2D collideOnMove = Physics2D.Raycast(new Vector2(position.x,position.z)+fakeVel.normalized*0.05f, fakeVel, fakeVel.magnitude * Time.deltaTime, 1 << 7);
             if (collideOnMove.collider != null)
             {
                 OnCollision(velocity.normalized, collideOnMove.distance,new Vector3(collideOnMove.normal.x,0,collideOnMove.normal.y));
@@ -49,6 +49,10 @@ public class Entity : SpriteObject
     }
     public virtual void OnCollision(Vector3 direction,float distance,Vector3 normal)
     {
+        //Debug.DrawLine(rasterize3DPosition(position), rasterize3DPosition(direction * distance + position),Color.yellow,.1f);
+        //Debug.DrawLine(rasterize3DPosition(direction * distance + position), rasterize3DPosition(direction * distance + position + normal),Color.blue,.1f);
+        //Debug.DrawLine(rasterize3DPosition(position), rasterize3DPosition(direction+position),Color.red,.1f);
+        if (Vector3.Dot(normal, velocity) > 0f) return;
         if(normal == Vector3.up)
         {
             velocity = new Vector3(velocity.x, 0, velocity.y);
