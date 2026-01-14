@@ -24,7 +24,6 @@ public class PlayerController : Entity
     }
     public void EquipWeapon(int ID,int seed)
     {
-        Debug.Log("wad");
         if (ID<0) DropHeldItem();
         holdingWeapon = GameManager.main.SpawnWeapon(ID, seed, position);
         SpawnWithWeaponID = ID; SpawnWithWeaponSeed = seed;
