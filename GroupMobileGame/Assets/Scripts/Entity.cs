@@ -21,9 +21,13 @@ public class Entity : SpriteObject
     }
     public override void Update()
     {
-        foreach(Effect ef in effects)
+        for(int i = 0; i < effects.Count; i++)
         {
-            ef.Affect(this);
+            effects[i].Affect(this);
+            if (!effects[i].active)
+            {
+                effects.RemoveAt(i); i--;
+            }
         }
 
         if (usePhysics && velocity.magnitude > 0)
@@ -167,26 +171,26 @@ public class Effect
 {
     public float timeDestroy = 0f;
     public ParticleSystem particles;
+    public bool active = true;
     public Effect(float Duration)
     {
         timeDestroy = Time.time+Duration;
     }
     public virtual void Destroy()
     {
+        if (!active) return;
         if (particles != null)
             GameObject.Destroy(particles.gameObject);
+        active = false;
 
     }
     public virtual void Affect(Entity host)
     {
+        if (!active) return;
         if (particles != null)
             particles.transform.position = host.transform.position-Vector3.forward;
         if(Time.time>timeDestroy)
-        {
             Destroy();
-            host.effects.Remove(this);
-
-        }
     }
 }
 public class DebugFireEffect : Effect
