@@ -32,11 +32,11 @@ public class DroppedItem : Entity
     }
     public void Pickup()
     {
-        if(PlayerController.holdingWeapon!=null)
+        if(PlayerController.main.holdingWeapon!=null)
         {
             PlayerController.main.DropHeldItem();
         }
-        PlayerController.holdingWeapon = GameManager.main.SpawnWeapon(ItemID, randomSeed,PlayerController.main.position);
+        PlayerController.main.EquipWeapon(ItemID, randomSeed);
         Destroy(gameObject);
     }
 }

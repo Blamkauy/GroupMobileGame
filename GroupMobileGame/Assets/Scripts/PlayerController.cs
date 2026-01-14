@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class PlayerController : Entity
 {
@@ -11,16 +12,28 @@ public class PlayerController : Entity
     public InputActionReference moveAction;
     public InputActionReference shootAction;
     public GameObject mobileControls;
-    public static Weapon holdingWeapon = null;//Static so that the holding weapon persists upon level changes
+    public Weapon holdingWeapon = null;//Static so that the holding weapon persists upon level changes
     public Image WeaponUIIcon;
     public TMPro.TextMeshProUGUI WeaponUIText;
+    public static int SpawnWithWeaponID = -1;
+    public static int SpawnWithWeaponSeed = 0;
     private void Awake()
     {
         main = this;
     }
+    public void EquipWeapon(int ID,int seed)
+    {
+        holdingWeapon = GameManager.main.SpawnWeapon(SpawnWithWeaponID, SpawnWithWeaponSeed, position);
+        SpawnWithWeaponID = ID; SpawnWithWeaponSeed = seed;
+
+    }
     public override void Start()
     {
         base.Start();
+        if(SpawnWithWeaponID>=0)
+        {
+            EquipWeapon(SpawnWithWeaponID, SpawnWithWeaponSeed);
+        }
         mobileControls.gameObject.SetActive(GameManager.main.controlScheme==GameControlScheme.Mobile);
     }
     public override void Die()
@@ -42,6 +55,7 @@ public class PlayerController : Entity
         GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position).Fling();
         Destroy(holdingWeapon.gameObject);
         holdingWeapon = null;
+        SpawnWithWeaponID = -1;
     }
     bool pickUpInputThisFrame = false;
     public override void Update()
