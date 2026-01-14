@@ -90,6 +90,7 @@ public class Entity : SpriteObject
         if (source.team != EntityTeam.Neutral && source.team == team) return false;
         health -= source.Damage;
         if (health <= 0) Die();
+        HitFlash();
         return true;
     }
     public bool intersectsHitbox(HitBox form)

@@ -26,6 +26,10 @@ public class DroppedItem : Entity
     {
         velocity = Vector3.Reflect(velocity, normal)*.5f;
     }
+    public override bool GetHit(DamageReason source)
+    {
+        return false;
+    }
     public void Pickup()
     {
         if(PlayerController.holdingWeapon!=null)
