@@ -98,7 +98,7 @@ public class Entity : SpriteObject
         {
             if (ef.GetType() == typeof(T))
             {
-                ef.timeDestroy = Time.time+ duration;
+                ef.timeDestroy = Mathf.Max(ef.timeDestroy, Time.time+duration);
                 break;
             }
         }
@@ -111,7 +111,8 @@ public class Entity : SpriteObject
         {
             if (ef.GetType() == effect.GetType())
             {
-                ef.timeDestroy = effect.timeDestroy;
+                ef.timeDestroy = Mathf.Max(ef.timeDestroy,effect.timeDestroy);
+                effect.Destroy();
                 break;
             }
         }
