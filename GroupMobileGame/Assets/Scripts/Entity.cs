@@ -21,7 +21,8 @@ public class Entity : SpriteObject
     }
     public override void Update()
     {
-        for(int i = 0; i < effects.Count; i++)
+        if (effects != null)
+            for (int i = 0; i < effects.Count; i++)
         {
             effects[i].Affect(this);
             if (!effects[i].active)
@@ -59,7 +60,7 @@ public class Entity : SpriteObject
         if (Vector3.Dot(normal, velocity) > 0f) return;
         if(normal == Vector3.up)
         {
-            velocity = new Vector3(velocity.x, 0, velocity.y);
+            velocity = new Vector3(velocity.x, 0, velocity.z);
 
         }
         else
@@ -71,6 +72,7 @@ public class Entity : SpriteObject
     }
     public virtual void OnDestroy()
     {
+        if(effects != null)
         foreach (Effect ef in effects)
             ef.Destroy();
         if (gameObject.scene.isLoaded)
@@ -99,6 +101,8 @@ public class Entity : SpriteObject
     }
     public void AddEffect<T>(float duration) where T : Effect
     {
+        if(effects == null) effects = new List<Effect>();
+
         foreach(Effect ef in effects)
         {
             if (ef.GetType() == typeof(T))
@@ -111,6 +115,7 @@ public class Entity : SpriteObject
     }
     public void AddEffect(Effect effect)
     {
+        if (effects == null) effects = new List<Effect>();
 
         foreach (Effect ef in effects)
         {
@@ -227,9 +232,9 @@ public class Enemy : Entity
         health = GameManager.main.difficulty == GameDifficulty.Easy ? health * 2 / 3 : GameManager.main.difficulty == GameDifficulty.Normal ? health : health * 3 / 2;// Easy: 66% hp, Normal: 100% hp, Hard: 150% hp 
         base.Start();
     }
-    public override void OnDestroy()
+    public override void Die()
     {
         DropRandomItem();//Probably add a chance here
-        base.OnDestroy();
+        base.Die();
     }
 }

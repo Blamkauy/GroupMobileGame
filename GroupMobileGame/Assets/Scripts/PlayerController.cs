@@ -17,12 +17,14 @@ public class PlayerController : Entity
     public TMPro.TextMeshProUGUI WeaponUIText;
     public static int SpawnWithWeaponID = -1;
     public static int SpawnWithWeaponSeed = 0;
+    float timeOfLastHit = 0f;
     private void Awake()
     {
         main = this;
     }
     public void EquipWeapon(int ID,int seed)
     {
+        Debug.Log("wad");
         if (ID<0) DropHeldItem();
         holdingWeapon = GameManager.main.SpawnWeapon(ID, seed, position);
         SpawnWithWeaponID = ID; SpawnWithWeaponSeed = seed;
@@ -41,6 +43,11 @@ public class PlayerController : Entity
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         Debug.Log("The player has died.");
+    }
+    public override bool GetHit(DamageReason source)
+    {
+        if (Time.time - timeOfLastHit < .1f) return false;//100ms of global i-frame
+        return base.GetHit(source);
     }
     public void SendPauseInput()
     {
