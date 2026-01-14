@@ -23,7 +23,8 @@ public class PlayerController : Entity
     }
     public void EquipWeapon(int ID,int seed)
     {
-        holdingWeapon = GameManager.main.SpawnWeapon(SpawnWithWeaponID, SpawnWithWeaponSeed, position);
+        if (ID<0) DropHeldItem();
+        holdingWeapon = GameManager.main.SpawnWeapon(ID, seed, position);
         SpawnWithWeaponID = ID; SpawnWithWeaponSeed = seed;
 
     }
@@ -51,11 +52,12 @@ public class PlayerController : Entity
     }
     public void DropHeldItem()
     {
+        SpawnWithWeaponID = -1;
 
+        if (holdingWeapon != null) return;
         GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position).Fling();
         Destroy(holdingWeapon.gameObject);
         holdingWeapon = null;
-        SpawnWithWeaponID = -1;
     }
     bool pickUpInputThisFrame = false;
     public override void Update()
