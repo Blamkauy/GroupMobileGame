@@ -1381,6 +1381,9 @@ MonoBehaviour:
     DroppedSprite: {fileID: 21300000, guid: 9d4ded3902820f44faf3541ee6624d5f, type: 3}
   - prefabReference: {fileID: 2269305614007950614, guid: 774414d914338a649b2833e4459f55b0, type: 3}
     DroppedSprite: {fileID: 21300000, guid: 931f7703ef52c874790d0ec946713a13, type: 3}
+  avaliableMaterials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 982a22fe22edbea4d9d9001a22448273, type: 2}
 --- !u!1 &7305716458316935794
 GameObject:
   m_ObjectHideFlags: 0

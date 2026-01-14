@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] DroppedItem droppedItemPrefab;
     [SerializeField] ParticleSystem[] effectParticles;
     public WeaponEntry[] AllAvailiableWeapons;
+    public Material[] avaliableMaterials;
     public static void PlayAudio(string audioName,int channel=0,float volume=1f,float pitch=1f,float panning=0f,bool ignoreListenerEffects = false)
     {
         if (channel < 0) { Debug.LogError("Channel cannot be negative."); return; }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpriteObject : MonoBehaviour
@@ -11,21 +12,36 @@ public class SpriteObject : MonoBehaviour
     public int rotationCount=1;//How many different angles are there?
     public int currentFrame;//Curent animation frame
     public Sprite overrideSprite;//normall null, otherwise, will always set the spriterenderer to this sprite.
+    public SpriteRenderer shadow;
     public SpriteRenderer sr;
     public float angle;//Verticle angle.
+    IEnumerator hitFlashAnim()
+    {
+        sr.material = GameManager.main.avaliableMaterials[1];
+        yield return new WaitForSeconds(0.1f);
+        sr.material = GameManager.main.avaliableMaterials[0];
+
+    }
+    public virtual void HitFlash()
+    {
+        StartCoroutine(hitFlashAnim());
+    }
     public virtual void OnDrawGizmos()
     {
         UpdateSprite();
     }
+    public const float verticalSquash = 0.422f;//sin 25° ~= 0.422;
     public static Vector3 rasterize3DPosition(Vector3 position)
     {
-        return new Vector3(position.x, position.z + position.y * 0.422f, 0);//sin 25° ~= 0.422;
+        return new Vector3(position.x, position.z + position.y * verticalSquash, 0);
     }
     public virtual void UpdateSprite()
     {
         if(setPosition)
         {
             transform.position = rasterize3DPosition(position);
+            if(shadow!=null)
+            shadow.transform.position = new Vector3(position.x, position.z-verticalSquash*1.5f, 0);
         }
 
         if (sr == null||!setSprite) return;

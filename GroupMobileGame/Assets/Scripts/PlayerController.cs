@@ -11,7 +11,7 @@ public class PlayerController : Entity
     public InputActionReference moveAction;
     public InputActionReference shootAction;
     public GameObject mobileControls;
-    public Weapon holdingWeapon = null;
+    public static Weapon holdingWeapon = null;//Static so that the holding weapon persists upon level changes
     public Image WeaponUIIcon;
     public TMPro.TextMeshProUGUI WeaponUIText;
     private void Awake()
@@ -39,7 +39,7 @@ public class PlayerController : Entity
     public void DropHeldItem()
     {
 
-        GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position);
+        GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position).Fling();
         Destroy(holdingWeapon.gameObject);
         holdingWeapon = null;
     }

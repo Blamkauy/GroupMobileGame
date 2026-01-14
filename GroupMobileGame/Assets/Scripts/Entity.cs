@@ -141,6 +141,12 @@ public class Entity : SpriteObject
         Debug.DrawLine(orig + new Vector3(-form.profile.width, -form.profile.height, 0) * .5f, orig + new Vector3(form.profile.width, -form.profile.height, 0) * .5f, Color.red, .5f);
         Debug.DrawLine(orig + new Vector3(-form.profile.width, -form.profile.height, 0) * .5f, orig + new Vector3(-form.profile.width, form.profile.height, 0) * .5f, Color.red, .5f);
     }
+    public DroppedItem DropRandomItem()
+    {
+        DroppedItem newItem = GameManager.main.SpawnDroppedItem(Random.Range(0, GameManager.main.AllAvailiableWeapons.Length), Random.Range(0, int.MaxValue), position);
+        newItem.Fling();
+        return newItem;
+    }
 }
 public enum EntityTeam { Player, Neutral, Enemy }
 [System.Serializable]
@@ -211,5 +217,18 @@ public class DebugFireEffect : Effect
             host.GetHit(new DamageReason(1, EntityTeam.Neutral));
         }
         base.Affect(host);
+    }
+}
+public class Enemy : Entity
+{
+    public override void Start()
+    {
+        health = GameManager.main.difficulty == GameDifficulty.Easy ? health * 2 / 3 : GameManager.main.difficulty == GameDifficulty.Normal ? health : health * 3 / 2;// Easy: 66% hp, Normal: 100% hp, Hard: 150% hp 
+        base.Start();
+    }
+    public override void OnDestroy()
+    {
+        DropRandomItem();//Probably add a chance here
+        base.OnDestroy();
     }
 }

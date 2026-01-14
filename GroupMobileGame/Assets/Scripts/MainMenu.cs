@@ -24,6 +24,8 @@ public class MainMenu : MonoBehaviour
     {
         GameManager.main.difficulty = (GameDifficulty)difficulty;
         Debug.Log($"Player has started the game on difficulty: {GameManager.main.difficulty.ToString()}");
+        if(PlayerController.holdingWeapon!=null)
+        Destroy(PlayerController.holdingWeapon.gameObject);
         LoadScene(1);
     }
     public void LoadScene(int ID)
