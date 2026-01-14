@@ -54,7 +54,7 @@ public class PlayerController : Entity
     {
         SpawnWithWeaponID = -1;
 
-        if (holdingWeapon != null) return;
+        if (holdingWeapon == null) return;
         GameManager.main.SpawnDroppedItem(holdingWeapon.SpawnID, holdingWeapon.Seed, holdingWeapon.position).Fling();
         Destroy(holdingWeapon.gameObject);
         holdingWeapon = null;
