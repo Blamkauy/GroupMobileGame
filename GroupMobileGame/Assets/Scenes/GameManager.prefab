@@ -1486,6 +1486,7 @@ MonoBehaviour:
   droppedItemPrefab: {fileID: 5770316453698075197, guid: ac731a38326b00a46b7be40e58b9df08, type: 3}
   effectParticles:
   - {fileID: 7799848444936950166, guid: 9821e263c5611d14a8ab7e8b6d709879, type: 3}
+  - {fileID: 7799848444936950166, guid: b39cac7a6ff809442b6461afd1ac05a0, type: 3}
   AllAvailiableWeapons:
   - prefabReference: {fileID: 98848467474816529, guid: 55902539c940ff047a2f0b89253e8275, type: 3}
     DroppedSprite: {fileID: 21300000, guid: 9d4ded3902820f44faf3541ee6624d5f, type: 3}

@@ -225,8 +225,33 @@ public class DebugFireEffect : Effect
         base.Affect(host);
     }
 }
+public class SlownessEffect : Effect
+{
+    public SlownessEffect(float Duration) : base(Duration) {
+        timeDestroy = Time.time + Duration;
+        particles = GameManager.main.SpawnParticles(1);
+
+    }
+    bool activated = false;
+    public override void Affect(Entity host)
+    {
+
+        if (Time.time > timeDestroy && host.GetType().IsSubclassOf(typeof(Enemy)))
+            (host as Enemy).speed /= .3f;
+        base.Affect(host);
+
+        if (activated) return;
+
+        activated = true;
+        if (host.GetType().IsSubclassOf(typeof(Enemy)))
+            (host as Enemy).speed *= .3f;
+
+    }
+}
 public class Enemy : Entity
 {
+    public float speed = 1f;
+
     public override void Start()
     {
         health = GameManager.main.difficulty == GameDifficulty.Easy ? health * 2 / 3 : GameManager.main.difficulty == GameDifficulty.Normal ? health : health * 3 / 2;// Easy: 66% hp, Normal: 100% hp, Hard: 150% hp 
@@ -234,7 +259,9 @@ public class Enemy : Entity
     }
     public override void Die()
     {
+        //if(Random.Range(0,10)==0)
         DropRandomItem();//Probably add a chance here
+        //GameManager.main.SpawnDroppedItem(1, Random.Range(0, int.MaxValue), position).Fling();
         base.Die();
     }
 }

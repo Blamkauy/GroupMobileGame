@@ -444,10 +444,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -312.0,
-            "y": 125.0,
-            "width": 0.0,
-            "height": 0.0
+            "x": -454.0,
+            "y": 116.99999237060547,
+            "width": 148.99996948242188,
+            "height": 34.00000762939453
         }
     },
     "m_Slots": [
@@ -550,7 +550,7 @@
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "MainTexture",
     "m_DefaultReferenceName": "_MainTexture",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
@@ -615,9 +615,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -385.0,
-            "y": 240.0,
-            "width": 208.0,
+            "x": -357.0,
+            "y": 237.0,
+            "width": 208.00001525878907,
             "height": 433.0
         }
     },

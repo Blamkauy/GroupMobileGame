@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Bat : Enemy
 {
-    public float speed = 1f;
     public bool chasing = true;
     float tte = 0f;
     public override void Update()
@@ -24,16 +23,16 @@ public class Bat : Enemy
             return;
         }
 
-        velocity = new Vector3(dir.x, 0, dir.z)*speed;
+        velocity = new Vector3(dir.x, 0, dir.z);
         float upward = 3f - position.y;
-        velocity = velocity.normalized + Vector3.up*Mathf.Clamp01(Mathf.Abs(upward))*Mathf.Sign(upward);
+        velocity = velocity.normalized * speed + Vector3.up*Mathf.Clamp01(Mathf.Abs(upward))*Mathf.Sign(upward);
         angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg - 90f;
         tte += Time.deltaTime;
 
         if (tte > 6f)
         {
             tte = -4f;
-            velocity = dir.normalized * 10;
+            velocity = dir.normalized * 10*speed;
         }
     }
 }

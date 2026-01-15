@@ -30,7 +30,7 @@ public class TestStabbySword : Weapon
         Cooldown = 1f;
         position = PlayerController.main.position + new Vector3(transform.up.x, 0f, transform.up.y) * (.5f + Cooldown * Cooldown * 0.4f);
 
-        foreach (Entity en in Entity.OverlapHitbox( new HitBox(position,new Rect(0,0,1f,1f),1f)))
+        foreach (Entity en in Entity.OverlapHitbox( new HitBox(position,new Rect(0,0,1f,1f),2f)))
         {
             en.GetHit(new DamageReason(1, EntityTeam.Player));
         }

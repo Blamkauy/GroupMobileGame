@@ -4,8 +4,8 @@ public class Axe : Weapon
 {
     float attackAngle = 0f;
     bool bufferAttack = false;
-    static string[] NamePrefixes = new string[] { "Generic", "Flaming" };
-    static System.Type[] effectList = new System.Type[] { null, typeof(DebugFireEffect) };
+    static string[] NamePrefixes = new string[] { "Generic", "Flaming" ,"Snail-like"};
+    static System.Type[] effectList = new System.Type[] { null, typeof(DebugFireEffect),typeof(SlownessEffect)};
     int EffectID = 0;
     public override void Update()
     {
@@ -27,9 +27,10 @@ public class Axe : Weapon
                 bufferAttack = false;
 
 
-                foreach (Entity en in Entity.OverlapHitbox(new HitBox(position, new Rect(0, 0, 2f, 2f), 1f)))
+                foreach (Entity en in Entity.OverlapHitbox(new HitBox(position, new Rect(0, 0, 2f, 2f), 2f)))
                 {
-                    if (en.GetHit(new DamageReason(1, EntityTeam.Player))&&EffectID!=0) en.AddEffect((Effect)System.Activator.CreateInstance(effectList[EffectID], new object[] { 10f }));
+                    if (en.GetHit(new DamageReason(1, EntityTeam.Player))&&EffectID!=0) 
+                        en.AddEffect((Effect)System.Activator.CreateInstance(effectList[EffectID], new object[] { 10f }));
                     
                 }
             }
